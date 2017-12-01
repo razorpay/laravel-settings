@@ -14,16 +14,6 @@ use Illuminate\Database\Connection;
 class DatabaseSettingStore extends SettingStore
 {
 	/**
-	 * Created at attribute value in the table
-	 */
-	const CREATED_AT = 'created_at';
-
-	/**
-	 * Updated at attribute value in the table
-	 */
-	const UPDATED_AT = 'updated_at';
-
-	/**
 	 * The database connection instance.
 	 *
 	 * @var \Illuminate\Database\Connection
@@ -75,6 +65,8 @@ class DatabaseSettingStore extends SettingStore
 		$this->table = $table ?: 'persistant_settings';
 		$this->keyColumn = $keyColumn ?: 'key';
 		$this->valueColumn = $valueColumn ?: 'value';
+		$this->createdAtColumn = 'created_at';
+		$this->updatedAtColumn = 'updated_at';
 	}
 
 	/**
@@ -130,6 +122,16 @@ class DatabaseSettingStore extends SettingStore
 	}
 
 	/**
+	 * Returns fresh time
+	 *
+	 * @return integer
+	 */
+	public function freshTimestamp()
+	{
+		return time();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function forget($key)
@@ -181,13 +183,12 @@ class DatabaseSettingStore extends SettingStore
 		}
 
 		foreach ($updateData as $key => $value) {
-			$updateAttributes = array(
-				$this->valueColumn => $value,
-				self::UPDATED_AT   => time());
-			$updateAttributes = array_merge($updateAttributes, $this->extraColumns);
+			$updatedAtValue = $this->freshTimestamp();
 			$this->newQuery()
 				->where($this->keyColumn, '=', $key)
-				->update($updateAttributes);
+				->update(array(
+					$this->valueColumn => $value,
+					$this->updatedAtColumn => $updatedAtValue));
 		}
 
 		if ($insertData) {
@@ -215,24 +216,18 @@ class DatabaseSettingStore extends SettingStore
 	{
 		$dbData = array();
 
-		if ($this->extraColumns) {
-			foreach ($data as $key => $value) {
-				$dbData[] = array_merge(
-					$this->extraColumns,
-					array($this->keyColumn => $key,
-						  $this->valueColumn => $value,
-						  self::CREATED_AT => time(),
-						  self::UPDATED_AT => time())
-				);
-			}
-		} else {
-			foreach ($data as $key => $value) {
-				$dbData[] = array(
+		$freshTimestamp = $this->freshTimestamp();
+		$timestamps = array(
+			$this->createdAtColumn => $freshTimestamp,
+			$this->updatedAtColumn => $freshTimestamp);
+
+		foreach ($data as $key => $value) {
+			$dbData[] = array_merge(
+				$this->extraColumns,
+				array(
 					$this->keyColumn => $key,
-					$this->valueColumn => $value,
-					self::CREATED_AT => time(),
-					self::UPDATED_AT => time());
-			}
+					$this->valueColumn => $value),
+				$timestamps);
 		}
 
 		return $dbData;

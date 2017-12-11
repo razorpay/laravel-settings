@@ -59,7 +59,12 @@ class DatabaseSettingStore extends SettingStore
 	 * @param \Illuminate\Database\Connection $connection
 	 * @param string                         $table
 	 */
-	public function __construct(Connection $connection, $table = null, $keyColumn = null, $valueColumn = null)
+	public function __construct(Connection $connection, 
+					$table = null,
+					$keyColumn = null,
+					$valueColumn = null,
+					$createdAtColumn = null,
+					$updatedAtColumn = null)
 	{
 		$this->connection = $connection;
 		$this->table = $table ?: 'persistant_settings';

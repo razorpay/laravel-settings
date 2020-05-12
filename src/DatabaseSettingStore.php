@@ -185,7 +185,7 @@ class DatabaseSettingStore extends SettingStore
 		foreach ($updateData as $key => $value) {
 			$updatedAtValue = $this->freshTimestamp();
 			$this->newQuery()
-				->where($this->keyColumn, '=', (string)$key)
+				->where($this->keyColumn, '=', strval($key))
 				->update(array(
 					$this->valueColumn => $value,
 					$this->updatedAtColumn => $updatedAtValue));

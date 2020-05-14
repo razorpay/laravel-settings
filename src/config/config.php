@@ -42,6 +42,8 @@ return [
 	// set them in this configuration
 	'keyColumn' => 'key',
 	'valueColumn' => 'value',
+	'createdAtColumn' => 'created_at',
+	'updatedAtColumn' => 'updated_at',
 
     /*
     |--------------------------------------------------------------------------

@@ -13,10 +13,14 @@ class CreateSettingsTable extends Migration
 			$this->tablename = Config::get('settings.table');
 			$this->keyColumn = Config::get('settings.keyColumn');
 			$this->valueColumn = Config::get('settings.valueColumn');
+			$this->createdAtColumn = Config::get('settings.createdAtColumn');
+			$this->updatedAtColumn = Config::get('settings.updatedAtColumn');
 		} else {
 			$this->tablename = Config::get('anlutro/l4-settings::table');
 			$this->keyColumn = Config::get('anlutro/l4-settings::keyColumn');
 			$this->valueColumn = Config::get('anlutro/l4-settings::valueColumn');
+			$this->createdAtColumn = Config::get('anlutro/l4-settings.createdAtColumn');
+			$this->updatedAtColumn = Config::get('anlutro/l4-settings.updatedAtColumn');
 		}
 	}
 
@@ -32,6 +36,8 @@ class CreateSettingsTable extends Migration
 			$table->increments('id');
 			$table->string($this->keyColumn)->index();
 			$table->text($this->valueColumn);
+			$table->integer($this->createdAtColumn);
+			$table->integer($this->updatedAtColumn);
 		});
 	}
 

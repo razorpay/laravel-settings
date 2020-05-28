@@ -26,16 +26,14 @@ class HelperTest extends TestCase
 		});
 	}
 
-//	/** @test */
-//  Skipping test for now
-	public function helper_without_parameters_returns_store() 
+	/** @test */
+	public function helper_without_parameters_returns_store()
 	{
-		$this->assertInstanceOf('anlutro\LaravelSettings\SettingStore', setting());
+	    $this->assertInstanceOf('anlutro\LaravelSettings\SettingStore', $this->setting());
 	}
 
-//	/** @test */
-//  Skipping test for now
-	public function single_parameter_get_a_key_from_store() 
+	/** @test */
+	public function single_parameter_get_a_key_from_store()
 	{
 		app('setting')->shouldReceive('get')->with('foo', null)->once();
 

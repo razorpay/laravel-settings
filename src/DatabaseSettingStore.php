@@ -216,12 +216,12 @@ class DatabaseSettingStore extends SettingStore
 		$deleteKeys = array();
 
 		foreach ($keys as $key) {
-            if (isset($updatedData[$key]) && isset($persistedData[$key]) && (string)$updatedData[$key] !== (string)$persistedData[$key]) {
-				$updateData[$key] = $updatedData[$key];
-            } elseif (!isset($insertData[$key])) {
-				$deleteKeys[] = $key;
-			}
-			unset($insertData[$key]);
+		    if (isset($updatedData[$key]) && isset($persistedData[$key]) && (string)$updatedData[$key] !== (string)$persistedData[$key]) {
+					$updateData[$key] = $updatedData[$key];
+		    } elseif (!isset($insertData[$key])) {
+					$deleteKeys[] = $key;
+				}
+				unset($insertData[$key]);
 		}
 
 		foreach ($updateData as $key => $value) {

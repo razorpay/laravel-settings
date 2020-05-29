@@ -29,7 +29,7 @@ class HelperTest extends TestCase
 	/** @test */
 	public function helper_without_parameters_returns_store()
 	{
-	    $this->assertInstanceOf('anlutro\LaravelSettings\SettingStore', $this->setting());
+	    $this->assertInstanceOf('anlutro\LaravelSettings\SettingStore', setting());
 	}
 
 	/** @test */

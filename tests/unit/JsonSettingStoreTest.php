@@ -3,7 +3,6 @@
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-
 class JsonSettingStoreTest extends TestCase
 {
 	public function tearDown(): void

@@ -3,7 +3,6 @@
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
-
 class DatabaseSettingStoreTest extends TestCase
 {
 	public function tearDown(): void
@@ -26,11 +25,11 @@ class DatabaseSettingStoreTest extends TestCase
 		unset($dbData[1]); // remove the nest.one array member
 		$query->shouldReceive('where')->with('key', '=', 'nest.one')->andReturn(m::self())->getMock()
             	      ->shouldReceive('update')->with(Mockery::on((function ($argument) {
-	    		if ($argument['value'] === 'nestone' && array_key_exists('updated_at', $argument)) 
+	    		if ($argument['value'] === 'nestone' && array_key_exists('updated_at', $argument))
 			{
 				return true;
 	    		}
-			
+
 	    		return false;
 		})));
 
@@ -79,7 +78,7 @@ class DatabaseSettingStoreTest extends TestCase
 		$this->assertEquals('bar', $store->get('foo'));
 	}
 
-	/**  */
+	/** @test */
 	public function extra_columns_are_inserted()
 	{
 		$connection = $this->mockConnection();
@@ -99,9 +98,9 @@ class DatabaseSettingStoreTest extends TestCase
             		}
             		return false;
         	}));
-		
+
 		$store = $this->makeStore($connection);
-        $store->set('foo', 'bar');
+		$store->set('foo', 'bar');
 		$store->setExtraColumns(array('extracol' => 'extradata'));
 		$store->save();
 	}

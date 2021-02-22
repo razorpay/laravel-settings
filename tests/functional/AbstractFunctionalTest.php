@@ -1,8 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use anlutro\LaravelSettings\JsonSettingStore;
 use anlutro\LaravelSettings\DatabaseSettingStore;
-use PHPUnit\Framework\TestCase;
 
 abstract class AbstractFunctionalTest extends TestCase
 {
@@ -52,7 +52,7 @@ abstract class AbstractFunctionalTest extends TestCase
 	{
 		$store = $this->createStore();
 		$store->set('foo', 'bar');
-        $this->expectException('UnexpectedValueException');
+		$this->expectException('UnexpectedValueException');
 		$this->expectExceptionMessage('Non-array segment encountered');
 		$store->set('foo.bar', 'baz');
 	}
@@ -64,7 +64,7 @@ abstract class AbstractFunctionalTest extends TestCase
 		$store->set('foo', 'bar');
 		$store->set('bar', 'baz');
 		$this->assertStoreEquals($store, array('foo' => 'bar', 'bar' => 'baz'));
-		
+
 		$store->forget('foo');
 		$this->assertStoreEquals($store, array('bar' => 'baz'));
 	}
@@ -85,7 +85,7 @@ abstract class AbstractFunctionalTest extends TestCase
 				'foo' => 'baz',
 			),
 		));
-		
+
 		$store->forget('foo.bar');
 		$this->assertStoreEquals($store, array(
 			'foo' => array(

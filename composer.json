@@ -36,7 +36,5 @@
                 "anlutro\\LaravelSettings\\ServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

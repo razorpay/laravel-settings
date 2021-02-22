@@ -1,7 +1,7 @@
 <?php
 /**
  * Laravel 4 - Persistent Settings
- * 
+ *
  * @author   Andreas Lutro <anlutro@gmail.com>
  * @license  http://opensource.org/licenses/MIT
  * @package  l4-settings
@@ -9,8 +9,8 @@
 
 namespace anlutro\LaravelSettings;
 
-use Illuminate\Database\Connection;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Connection;
 
 class DatabaseSettingStore extends SettingStore
 {

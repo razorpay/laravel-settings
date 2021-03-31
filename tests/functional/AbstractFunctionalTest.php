@@ -1,13 +1,14 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use anlutro\LaravelSettings\JsonSettingStore;
 use anlutro\LaravelSettings\DatabaseSettingStore;
 
-abstract class AbstractFunctionalTest extends PHPUnit_Framework_TestCase
+abstract class AbstractFunctionalTest extends TestCase
 {
 	protected abstract function createStore(array $data = array());
 
-	protected function assertStoreEquals($store, $expected, $message = null)
+	protected function assertStoreEquals($store, $expected, $message = '')
 	{
 		$this->assertEquals($expected, $store->all(), $message);
 		$store->save();
@@ -15,7 +16,7 @@ abstract class AbstractFunctionalTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, $store->all(), $message);
 	}
 
-	protected function assertStoreKeyEquals($store, $key, $expected, $message = null)
+	protected function assertStoreKeyEquals($store, $key, $expected, $message = '')
 	{
 		$this->assertEquals($expected, $store->get($key), $message);
 		$store->save();
@@ -51,7 +52,8 @@ abstract class AbstractFunctionalTest extends PHPUnit_Framework_TestCase
 	{
 		$store = $this->createStore();
 		$store->set('foo', 'bar');
-		$this->setExpectedException('UnexpectedValueException', 'Non-array segment encountered');
+		$this->expectException('UnexpectedValueException');
+		$this->expectExceptionMessage('Non-array segment encountered');
 		$store->set('foo.bar', 'baz');
 	}
 
@@ -62,7 +64,7 @@ abstract class AbstractFunctionalTest extends PHPUnit_Framework_TestCase
 		$store->set('foo', 'bar');
 		$store->set('bar', 'baz');
 		$this->assertStoreEquals($store, array('foo' => 'bar', 'bar' => 'baz'));
-		
+
 		$store->forget('foo');
 		$this->assertStoreEquals($store, array('bar' => 'baz'));
 	}
@@ -83,7 +85,7 @@ abstract class AbstractFunctionalTest extends PHPUnit_Framework_TestCase
 				'foo' => 'baz',
 			),
 		));
-		
+
 		$store->forget('foo.bar');
 		$this->assertStoreEquals($store, array(
 			'foo' => array(

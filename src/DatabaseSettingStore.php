@@ -1,7 +1,7 @@
 <?php
 /**
  * Laravel 4 - Persistent Settings
- * 
+ *
  * @author   Andreas Lutro <anlutro@gmail.com>
  * @license  http://opensource.org/licenses/MIT
  * @package  l4-settings
@@ -9,6 +9,7 @@
 
 namespace anlutro\LaravelSettings;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Connection;
 
 class DatabaseSettingStore extends SettingStore
@@ -208,7 +209,7 @@ class DatabaseSettingStore extends SettingStore
 		$method = !method_exists($keysQuery, 'lists') ? 'pluck' : 'lists';
 		$keys = $keysQuery->$method($this->keyColumn);
 
-		$insertData = array_dot($data);
+		$insertData = Arr::dot($data);
 		$updateData = array();
 		$deleteKeys = array();
 

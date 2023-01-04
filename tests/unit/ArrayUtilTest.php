@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use anlutro\LaravelSettings\ArrayUtil;
+use PHPUnit\Framework\TestCase;
 
 class ArrayUtilTest extends TestCase
 {

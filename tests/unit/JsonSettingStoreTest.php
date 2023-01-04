@@ -22,31 +22,31 @@ class JsonSettingStoreTest extends TestCase
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 *
 	 */
 	public function throws_exception_when_file_not_writeable()
 	{
 		$files = $this->mockFilesystem();
 		$files->shouldReceive('exists')->once()->with('fakepath')->andReturn(true);
 		$files->shouldReceive('isWritable')->once()->with('fakepath')->andReturn(false);
-		$store = $this->makeStore($files);
+        $this->expectException('InvalidArgumentException');
+        $this->makeStore($files);
 	}
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
 	 */
 	public function throws_exception_when_files_put_fails()
 	{
 		$files = $this->mockFilesystem();
 		$files->shouldReceive('exists')->once()->with('fakepath')->andReturn(false);
 		$files->shouldReceive('put')->once()->with('fakepath', '{}')->andReturn(false);
-		$store = $this->makeStore($files);
-	}
+        $this->expectException('InvalidArgumentException');
+        $this->makeStore($files);
+    }
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
 	 */
 	public function throws_exception_when_file_contains_invalid_json()
 	{
@@ -54,8 +54,8 @@ class JsonSettingStoreTest extends TestCase
 		$files->shouldReceive('exists')->once()->with('fakepath')->andReturn(true);
 		$files->shouldReceive('isWritable')->once()->with('fakepath')->andReturn(true);
 		$files->shouldReceive('get')->once()->with('fakepath')->andReturn('[[!1!11]');
-
-		$store = $this->makeStore($files);
-		$store->get('foo');
-	}
+        $this->expectException('RuntimeException');
+        $store = $this->makeStore($files);
+        $store->get('foo');
+    }
 }

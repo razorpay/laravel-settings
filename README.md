@@ -1,6 +1,6 @@
 # Laravel Settings
 
-[![Build Status](https://travis-ci.org/anlutro/laravel-settings.png?branch=master)](https://travis-ci.org/anlutro/laravel-settings)
+[![Build Status](https://api.travis-ci.org/anlutro/laravel-settings.svg?branch=master)](https://travis-ci.org/anlutro/laravel-settings)
 [![Latest Stable Version](https://poser.pugx.org/anlutro/l4-settings/v/stable.svg)](https://github.com/anlutro/laravel-settings/releases)
 [![License](https://poser.pugx.org/anlutro/l4-settings/license.svg)](http://opensource.org/licenses/MIT)
 
@@ -15,7 +15,7 @@ Despite the package name, this package works with Laravel 5.x!
 ## Installation - Laravel >= 5.5
 
 1. `composer require anlutro/l4-settings`
-2. Publish the config file by running `php artisan vendor:publish --provider="anlutro/l4-settings" --tag="config"`. The config file will give you control over which storage engine to use as well as some storage-specific settings.
+2. Publish the config file by running `php artisan vendor:publish --provider="anlutro\LaravelSettings\ServiceProvider" --tag="config"`. The config file will give you control over which storage engine to use as well as some storage-specific settings.
 
 ## Installation - Laravel < 5.5
 
@@ -40,6 +40,27 @@ $settings = Setting::all();
 
 Call `Setting::save()` explicitly to save changes made.
 
+You could also use the `setting()` helper:
+
+```php
+// Get the store instance
+setting();
+
+// Get values
+setting('foo');
+setting('foo.bar');
+setting('foo', 'default value');
+setting()->get('foo');
+
+// Set values
+setting(['foo' => 'bar']);
+setting(['foo.bar' => 'baz']);
+setting()->set('foo', 'bar');
+
+// Method chaining
+setting(['foo' => 'bar'])->save();
+```
+
 
 ### Auto-saving
 
@@ -47,6 +68,21 @@ In Laravel 4.x, the library makes sure to auto-save every time the application s
 
 In Laravel 5.x, if you add the middleware `anlutro\LaravelSettings\SaveMiddleware` to your `middleware` list in `app\Http\Kernel.php`, settings will be saved automatically at the end of all HTTP requests, but you'll still need to call `Setting::save()` explicitly in console commands, queue workers etc.
 
+
+### Store cache
+
+When reading from the store, you can enable the cache.
+
+You can also configure flushing of the cache when writing and configure time to live.
+
+Reading will come from the store, and then from the cache, this can reduce load on the store.
+
+```php
+// Cache usage configurations.
+'enableCache' => false,
+'forgetCacheByWrite' => true,
+'cacheTtl' => 15,
+```
 
 ### JSON storage
 
@@ -57,7 +93,7 @@ You can modify the path used on run-time using `Setting::setPath($path)`.
 
 #### Using Migration File
 
-If you use the database store you need to run `php artisan migrate --package=anlutro/l4-settings` (Laravel 4.x) or `php artisan migrate --path=vendor/anlutro/l4-settings/src/migrations` (Laravel 5.x) to generate the table.
+If you use the database store you need to run `php artisan migrate --package=anlutro/l4-settings` (Laravel 4.x) or `php artisan vendor:publish --provider="anlutro\LaravelSettings\ServiceProvider" --tag="migrations" && php artisan migrate` (Laravel 5.x) to generate the table.
 
 #### Example
 

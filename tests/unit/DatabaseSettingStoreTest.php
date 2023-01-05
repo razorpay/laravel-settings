@@ -32,11 +32,10 @@ class DatabaseSettingStoreTest extends TestCase
 
 	    		return false;
 		})));
-
 		$self = $this; // 5.3 compatibility
-		$query->shouldReceive('insert')->once()->andReturnUsing(function($arg) use($dbData, $self) {
-			$self->assertEquals(count($dbData), count($arg));
-			$argEntries = array_column($dbData, 'value', 'key');
+        $query->shouldReceive('insert')->once()->andReturnUsing(function($arg) use($dbData, $self) {
+            $self->assertEquals(count($dbData), count($arg));
+            $argEntries = array_column($dbData, 'value', 'key');
 			$dbDataEntries = array_column($dbData, 'value', 'key');
 
 			// Ensure that updated_at and created_at columns exist in table
@@ -50,9 +49,9 @@ class DatabaseSettingStoreTest extends TestCase
 		    	}
 
             	foreach ($dbDataEntries as $dbDataEntry) {
-				$self->assertContains($dbDataEntry, $argEntries);
-			}
-		});
+                $self->assertContains($dbDataEntry, $argEntries);
+            }
+        });
 
 		$store = $this->makeStore($connection);
 		$store->set('foo', 'bar');
@@ -78,7 +77,7 @@ class DatabaseSettingStoreTest extends TestCase
 		$this->assertEquals('bar', $store->get('foo'));
 	}
 
-	/** @test */
+	/**  */
 	public function extra_columns_are_inserted()
 	{
 		$connection = $this->mockConnection();
@@ -98,9 +97,8 @@ class DatabaseSettingStoreTest extends TestCase
             		}
             		return false;
         	}));
-
 		$store = $this->makeStore($connection);
-		$store->set('foo', 'bar');
+        $store->set('foo', 'bar');
 		$store->setExtraColumns(array('extracol' => 'extradata'));
 		$store->save();
 	}

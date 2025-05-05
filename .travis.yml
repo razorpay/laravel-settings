@@ -1,3 +1,8 @@
+branches:
+  only:
+    - develop
+    - master
+
 language: php
 
 php: 
@@ -11,12 +16,15 @@ matrix:
       env: COMPOSER_ARGS="--prefer-lowest"
 
 env:
-  - COMPOSER_REQS="laravel/framework:>=5.7"
+ - COMPOSER_REQS="laravel/framework:>=5.7"
   matrix:
-    - COMPOSER_ARGS=""
-    - COMPOSER_ARGS="--prefer-lowest"
+    exclude:
+    # laravel 5.5 and higher only supports php 7
+    - php: 5.6
+      env: COMPOSER_REQS="laravel/framework:>=5.7"
 
 install:
+  - composer require --no-update $COMPOSER_REQS
   - composer update ${COMPOSER_ARGS} --no-interaction
 
 script:

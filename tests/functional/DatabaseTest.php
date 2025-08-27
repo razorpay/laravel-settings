@@ -2,7 +2,7 @@
 
 class DatabaseTest extends AbstractFunctionalTest
 {
-	public function setUp(): void
+    public function setUp(): void
 	{
 		$this->container = new \Illuminate\Container\Container;
 		$this->capsule = new \Illuminate\Database\Capsule\Manager($this->container);
@@ -20,13 +20,15 @@ class DatabaseTest extends AbstractFunctionalTest
             		$t->integer('created_at');
             		$t->integer('updated_at');
 		});
+		parent::setUp();
 	}
 
-	public function tearDown(): void
+    public function tearDown(): void
 	{
 		$this->capsule->schema()->drop('persistant_settings');
 		unset($this->capsule);
 		unset($this->container);
+		parent::tearDown();
 	}
 
 	protected function createStore(array $data = array())

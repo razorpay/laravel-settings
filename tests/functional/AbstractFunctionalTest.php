@@ -3,10 +3,17 @@
 use PHPUnit\Framework\TestCase;
 use anlutro\LaravelSettings\JsonSettingStore;
 use anlutro\LaravelSettings\DatabaseSettingStore;
+use Illuminate\Support\Facades\Config;
+use Mockery as m;
 
 abstract class AbstractFunctionalTest extends TestCase
 {
 	protected abstract function createStore(array $data = array());
+
+	public function tearDown(): void
+	{
+		m::close();
+	}
 
 	protected function assertStoreEquals($store, $expected, $message = '')
 	{

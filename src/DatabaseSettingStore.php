@@ -59,7 +59,7 @@ class DatabaseSettingStore extends SettingStore
     	/**
 	 * Any query constraints that should be applied.
 	 *
-	 * @var Closure|null
+	 * @var \Closure|null
 	 */
 	protected $queryConstraint;
 
@@ -142,7 +142,7 @@ class DatabaseSettingStore extends SettingStore
 	/**
 	 * Set the query constraint.
 	 *
-	 * @param Closure $callback
+	 * @param \Closure $callback
 	 */
 	public function setConstraint(\Closure $callback)
 	{
@@ -210,16 +210,18 @@ class DatabaseSettingStore extends SettingStore
 		$keys = $keysQuery->$method($this->keyColumn);
 
 		$insertData = Arr::dot($data);
+		$updatedData = Arr::dot($this->updatedData);
+		$persistedData = Arr::dot($this->persistedData);
 		$updateData = array();
 		$deleteKeys = array();
 
 		foreach ($keys as $key) {
-			if (isset($insertData[$key])) {
-				$updateData[$key] = $insertData[$key];
-			} else {
-				$deleteKeys[] = $key;
-			}
-			unset($insertData[$key]);
+		    if (isset($updatedData[$key]) && isset($persistedData[$key]) && (string)$updatedData[$key] !== (string)$persistedData[$key]) {
+					$updateData[$key] = $updatedData[$key];
+		    } elseif (!isset($insertData[$key])) {
+					$deleteKeys[] = $key;
+				}
+				unset($insertData[$key]);
 		}
 
 		foreach ($updateData as $key => $value) {
@@ -245,10 +247,10 @@ class DatabaseSettingStore extends SettingStore
 
 	/**
 	 * Transforms settings data into an array ready to be insterted into the
-	 * database. Call array_dot on a multidimensional array before passing it
+	 * database. Call Arr::dot on a multidimensional array before passing it
 	 * into this method!
 	 *
-	 * @param  array $data Call array_dot on a multidimensional array before passing it into this method!
+	 * @param  array $data Call Arr::dot on a multidimensional array before passing it into this method!
 	 *
 	 * @return array
 	 */
